@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mango Surveyor</title>
+
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_user.css') }}" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
+  <script type="text/javascript">
+    var jQuery_3_6_1 = $.noConflict(true);
+  </script>
+</head>
+<body>
+  <main>
+      <div class="box">
+          <div class="heading_div">
+
+              <h2  class="h1">Welcome to Mango Surveyor</h2>
+
+          </div>
+          <div id ="drop_down_div_1" class="div_user">
+
+              <img src="{{ url_for('static', filename='img/adminsss.png') }}"  class="img">
+              <div class="container">
+                  <h4 class="h_admin"><b>ADMIN</b></h4>
+              </div>
+
+          </div>
+          <div id ="drop_down_div" class=" div_user_2">
+
+              <img src="{{ url_for('static', filename='img/user_icon.png') }}"  class="img_user">
+              <div class="container_user">
+                  <h4 class="h_user"><b>USER</b></h4>
+              </div>
+
+          </div>
+      </div>
+      <div class="drop_down_content" id="drop_down_content">
+          <div class="inner-box">
+              <form class="form">
+                  <input type="text" placeholder="Enter the key" autocomplete="off" required/>
+
+
+                  <button class="proceed">
+                      Proceed
+                  </button>
+                  <button class="cancel" id="cancel_user" >
+                      Cancel
+                  </button>
+
+
+              </form>
+          </div>
+      </div>
+      <div class="drop_down_content" id="drop_down_content_1">
+          <div class="inner-box">
+              <form class="form">
+                  <input type="text" placeholder="Enter Your Province" autocomplete="off" required/>
+
+                  <button class="gen" id="gen">
+                      Generate Key
+                  </button>
+
+                  <button class="proceed" id="proceed">
+                      Proceed
+                  </button>
+                  <button class="cancel" id = "cancel">
+                      Cancel
+                  </button>
+
+
+              </form>
+          </div>
+      </div>
+  </main>
+<script>
+    const div = document.getElementById('drop_down_div');
+    const div_1 = document.getElementById('drop_down_div_1');
+    const content = document.getElementById('drop_down_content');
+    const content_1 = document.getElementById('drop_down_content_1');
+    const cancel = document.getElementById('cancel');
+    const cancel_user = document.getElementById('cancel_user');
+    const gen =  document.getElementById('gen');
+    const proceed =  document.getElementById('proceed');
+
+    div_1.addEventListener('click', function() {
+      if (content_1.style.display === 'none') {
+        content_1.style.display = 'block';
+        content_1.classList.add("drop_down_content_1");
+
+
+    } else {
+
+        content_1.style.display = 'none';}});
+
+
+    cancel.addEventListener('click', function(){
+         content_1.classList.remove("drop_down_content_1");
+         content_1.classList.add("slide-up");
+
+         });
+
+    cancel_user.addEventListener('click', function(){
+         content.classList.remove("drop_down_content_1");
+         content.classList.add("slide-up");
+
+         });
+
+
+    div.addEventListener('click', function() {
+      if (content.style.display === 'none') {
+        content.style.display = 'flex';
+        content.classList.add("drop_down_content_1");
+
+
+    } else {
+        content.style.display = 'none';}});
+
+    gen.addEventListener('click', function() {
+      proceed.disabled = false;
+      M.toast({ html: `Generate the key first`, classes: 'red' });
+});
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mango Surveyor</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dropdown_.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logout_modal.css') }}">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo1.png') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal-style.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastet.css') }}">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script type="text/javascript">
+        var jQuery_3_6_1 = $.noConflict(true);
+    </script>
+
+    <style>
+        .menu_::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        /* Track */
+        .menu_::-webkit-scrollbar-track {
+            border-radius: 100vh;
+            background: #323741;
+        }
+
+        .menu_::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, rgba(255, 237, 89, 1) 20%, rgba(120, 236, 108, 1) 86%);
+            border-radius: 15px;
+            width: thin;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section id="sidebar" class="hide">
+        <a style="padding-top: 10px;" href="#" class="brand"><img
+                src="{{ url_for('static', filename='img/logo-black.png') }}" width="225px" height="55px" alt=""></a>
+        <ul class="side-menu">
+            <li><a href="{{ url_for('dashboard') }}" class="active"><i class='bx bxs-dashboard icon'></i> Dashboard</a></li>
+            <li class="divider" data-text="main">Main</li>
+            <!-- <li>
+                <a href="#"><i class='bx bxs-inbox icon'></i> Upload Images <i
+                        class='bx bx-chevron-right icon-right'></i></a>
+                <ul class="side-dropdown">
+                    <li><a href="#">Alert</a></li>
+                    <li><a href="#">Badges</a></li>
+                    <li><a href="#">Breadcrumbs</a></li>
+                    <li><a href="#">Button</a></li>
+                </ul>
+            </li> -->
+            <li><a href=""><i class='bx  bxs-notepad icon'></i> Make Predictions</a></li>
+            <li><a href=""><i class='bx bx-history icon'></i> History</a></li>
+            <li class="divider" data-text="Information">Information</li>
+            <li><a href=""><i class='bx bxs-notepad icon'></i> About Disease </a></li>
+
+        </ul>
+        <div class="ads">
+            <div class="wrapper">
+                <!-- <a href="#" class="btn-upgrade">Upgrade</a> -->
+                <p>A Product of <span>Mango Surveyor</span>. <span>All Rights Reserved</span></p>
+            </div>
+        </div>
+    </section>
+    <!-- SIDEBAR -->
+
+
+
+    <!-- NAVBAR -->
+    <section id="content">
+        <!--Logout Modal-->
+
+
+        <div id="logou" class="popup">
+            <header>
+                <span>Ready to Leave?</span>
+                <div><i id="closing_logout" class="uil uil-times"></i>
+                </div>
+            </header>
+            <div class="content">
+
+                <p>Select "Logout" below if you are ready to end your current session.</p>
+
+                <br>
+                <div class="field">
+                    <button id="cancel_logout">Cancel</button>
+                    <button><a href="{{url_for('login')}}">Logout</a> </button>
+                </div>
+            </div>
+        </div>
+        <!--Logout Modal-->
+
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu toggle-sidebar'></i>
+            <form action="#">
+                <!-- <div class="form-group">
+					<input type="text" placeholder="Search...">
+					<i class='bx bx-search icon' ></i>
+				</div>-->
+            </form>
+            <!-- <a href="#" class="nav-link">
+				<i class='bx bxs-bell icon' ></i>
+				<span class="badge">5</span>
+			</a> -->
+            <!-- <a href="#" class="nav-link">
+				<i class='bx bxs-message-square-dots icon' ></i>
+				<span class="badge">8</span>
+			</a> -->
+            <h4 id="usename" style="font-size: 15px; font-weight: 600;">
+                </h4>
+                <span class="divider"></span>
+                <div class="profile">
+
+                    <img src="{{ url_for('static', filename='img/user.png') }}" alt="">
+                    <ul class="profile-link">
+                        <li><a href="#"><i class='bx bxs-user-circle icon'></i> Profile</a></li>
+                        <li id="logout_"><a href="#"><i class='bx bxs-log-out-circle'></i> Logout</a></li>
+                    </ul>
+                </div>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main id="main">
+            <h1 class="title">Dashboard</h1>
+            <h1 id="useer" style="display: none;">{{session['user']}}</h1>
+
+            <ul class="breadcrumbs">
+                <li><a href="#">Home</a></li>
+                <li class="divider">/</li>
+                <li><a href="#" class="active">Dashboard</a></li>
+            </ul>
+
+            <br>
+            <span style="display: inline-block ">
+                <div class="dropdown_">
+                    <div class="select_">
+                        <span id="titling" class="selected_">--Select Specie--</span>
+                        <div class="caret_"></div>
+                    </div>
+                    <ul id="spe" class="menu_" style="left: 0%;width:330px;height:200px;overflow-y: scroll;transform: none; scrollbar-color:  rgba(255,237,89,1)  #f1f0f6;
+                    scrollbar-width: thin;  text-align: left;">
+
+                    </ul>
+                </div>
+            </span>
+            <span> <button
+                    style=" display: inline;margin-bottom: 6px;width: 50px;height: 50px;background: linear-gradient(90deg, rgba(255,237,89,1) 20%, rgba(120,236,108,1) 86%);font-size: 16px !important"
+                    class="w3-button w3-circle w3-black"
+                    onclick="jQuery_3_6_1('#sec-form').toggleClass('show-modal')">+</button>
+            </span>
+
+            <br>
+            <br>
+
+<!--            farm block-->
+            <span style="display: inline-block ">
+                <div>
+                    <div class="select_">
+                        <span id="titling_1">--Add Your Farm--</span>
+<!--                        <div ></div>-->
+                    </div>
+<!--                    <ul id="spe_1" class="menu_" style="left: 0%;width:330px;height:200px;overflow-y: scroll;transform: none; scrollbar-color:  rgba(255,237,89,1)  #f1f0f6;-->
+<!--                    scrollbar-width: thin;  text-align: left;">-->
+
+                    </ul>
+                </div>
+            </span>
+            <span> <button
+                    style=" display: inline;margin-bottom: 6px;width: 50px;height: 50px;background: linear-gradient(90deg, rgba(255,237,89,1) 20%, rgba(120,236,108,1) 86%);font-size: 16px !important"
+                    class="w3-button w3-circle w3-black"
+                    onclick="jQuery_3_6_1('#farm-form').toggleClass('show-modal')">+</button>
+            </span>
+
+
+            <br>
+<!--            Specie Form -->
+            <div class="center modal-box" id="sec-form">
+                <div class="fas fa-times" id="close-first"></div>
+                <div class="fas   fa-leaf icon1"></div>
+                <header>Add Mango Speice!</header>
+                <p>
+                    Select Mango Speice from the Dropdown.
+                </p>
+                <form action="#">
+                    <!-- <div class="form-group"> -->
+                    <div class="dropdown_">
+                        <div class="select_" style="width: 100%;">
+                            <span id="selected_specie" class="selected_">--Select Specie--</span>
+                            <div class="caret_"></div>
+                        </div>
+                        <ul class="menu_" style="width:330px;height:200px;overflow-y: scroll;transform: none; scrollbar-color:  rgba(255,237,89,1)  #f1f0f6;
+                            scrollbar-width: thin;  text-align: left;">
+                            <li>Almaas</li>
+                            <li>Alphonso</li>
+                            <li>Anmol</li>
+                            <li>AnwarRataul</li>
+                            <li>BaganPali</li>
+                            <li>Chaunsa</li>
+                            <li>ChokAnan</li>
+                            <li>Collector</li>
+                            <li>Dusehri</li>
+                            <li>DesiAdaPamato</li>
+                            <li>DesiBadam</li>
+                            <li>DesiGola</li>
+                            <li>DesiBadshah</li>
+                            <li>Dilkash</li>
+                            <li>Fajri</li>
+                            <li>GulabJanhu</li>
+                            <li>GulabKhas</li>
+                            <li>Lahoti</li>
+                            <li>LalBadshah</li>
+                            <li>Langra</li>
+                            <li>Malda</li>
+                            <li>MuhammadWole</li>
+                            <li>NawabPuri</li>
+                            <li>Neelum</li>
+                            <li>RaniPhool</li>
+                            <li>Sindhri</li>
+                            <li>Saroli</li>
+                            <li>Sawarnarika</li>
+                            <li>SalehBhai</li>
+                            <li>Saib</li>
+                            <li>Shan-e-Khuda</li>
+                            <li>Taimuria</li>
+                            <li>Toofan</li>
+                            <li>Wanghi</li>
+                            <li>Zafran</li>
+
+                        </ul>
+                    </div>
+
+                    <!-- </div> -->
+                    <button id="first-submit">Submit</button>
+
+                </form>
+
+<!--                Fram Form-->
+            </div>
+            <div class="center modal-box" id="farm-form">
+                <div class="fas fa-times" id="close-first_1"></div>
+                <div class="fas   fa-leaf icon1"></div>
+                <header>Farm Access Form</header>
+                <p id="gen_button">
+                    Enter the code to enter into your desired Farm.
+                    {{ hide|safe }}
+                </p>
+                <form action="/dashboard" , method="post">
+                    <!-- <div class="form-group"> -->
+                    <div class="dropdown_">
+<!--                        <div class="select_" style="width: 100%;">-->
+                            <input type="text" name = "entry"  id="gen__button"  style="width:80%;height:35px; border-radius:5px; background-color: rgba(32,32,32);
+                                    color:rgba(255,255,255); text-align:center;" placeholder="Enter the farm code"/>
+                            {{ hide_en|safe }}
+                            <button type="submit" name="subs" value = "subs"   id = "btn">Submit</button>
+                             {{sub|safe}}
+<!--                        </div>-->
+
+                    </div>
+                    <br>
+                    <p id = "or">
+                        OR
+                        {{ hide_label_or|safe }}
+                    </p>
+                    <div>
+                               {{count_farm}}
+                        <br>
+                               {{users_total}}
+                    </div>
+                    <button name = 'gen'  value="gen"  id="genbutton">Create Farm</button>
+                    {{ hide_button_script|safe }}
+
+
+                </form>
+            </div>
+
+            <script>
+
+                jQuery_3_6_1(document).ready(function () {
+
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyAfGNRYMBoJkc2lNpBvC2ZlZFtV6cqWTEI",
+                        authDomain: "fyp-project-cs06.firebaseapp.com",
+                        projectId: "fyp-project-cs06",
+                        storageBucket: "fyp-project-cs06.appspot.com",
+                        messagingSenderId: "463282028020",
+                        appId: "1:463282028020:web:404b702857a860e1478da1"
+                    };
+
+
+                    const app = firebase.initializeApp(firebaseConfig);
+                    var userid = document.getElementById("useer").innerHTML;
+                    localStorage.setItem("user_id",userid);
+                    var starCountRef = firebase.database().ref('users/' + userid);
+                    starCountRef.get().then((snapshot) => {
+                        if (snapshot.exists()) {
+                            const data = snapshot.val();
+
+                            ll = Object.values(data)
+
+                            document.getElementById("usename").innerHTML = "Welcome, " + data["username"]
+
+                            localStorage.setItem("username", "Welcome, " + data["username"])
+                            if (data["speices"] == "none") {
+                                jQuery_3_6_1('#sec-form').toggleClass("show-modal");
+                            }
+                            else {
+                                localStorage.setItem("total_speices",data["speices"]);
+                                listof = data["speices"].split("_")
+                                for (i = 0; i < listof.length; i++) {
+
+                                    jQuery_3_6_1("#spe").append(`<li id=${listof[i]}>${listof[i]}</li>`);
+                                    jQuery_3_6_1(`#${listof[i]}`).click(function (event) {
+                                        var ttt = jQuery_3_6_1(event.target).text()
+                                        document.getElementById("titling").innerText = ttt;
+                                        document.getElementById("spe").classList.remove("menu-open");
+                                        document.getElementById("overiew").innerText = `Overview of Mango-${ttt}`;
+                                        document.getElementById("cont").style.visibility = "initial";
+
+                                    });
+                                }
+
+
+                            }
+                        }
+
+
+
+
+                    });
+
+                    jQuery_3_6_1('#logout_').click(function (e) {
+                        e.preventDefault();
+                        jQuery_3_6_1('#logou').toggleClass("show");
+                    });
+                    jQuery_3_6_1('#closing_logout').click(function (e) {
+                        e.preventDefault();
+                        jQuery_3_6_1('#logou').toggleClass("show");
+                    });
+                    jQuery_3_6_1('#cancel_logout').click(function (e) {
+                        e.preventDefault();
+                        jQuery_3_6_1('#logou').toggleClass("show");
+                    });
+
+
+
+
+                    jQuery_3_6_1('#first-submit').click(function (e) {
+                        e.preventDefault();
+                        var b = document.getElementById('selected_specie').innerHTML;
+                        var userid = document.getElementById("useer").innerHTML;
+
+                        var starCountRef = firebase.database().ref('users/' + userid);
+                        starCountRef.get().then((snapshot) => {
+                            if (snapshot.exists()) {
+                                data = snapshot.val();
+                                listoff = data["speices"].split("_")
+                                console.log(snapshot.val());
+                                if (data["speices"] == "none") {
+                                    const dic = { "speices": b }
+                                    firebase.database().ref(`users/${userid}`).update(dic);
+                                    M.toast({ html: `Succesfully Added!!`, classes: 'green rounded' });
+                                    var delayInMilliseconds = 1000; //1 second
+                                    setTimeout(function () {
+                                        window.location.href = 'dashboard';
+                                    }, delayInMilliseconds);
+                                }
+                                else if (listoff.includes(b)) {
+                                    M.toast({ html: `Already Added!!`, classes: 'red rounded' });
+                                }
+                                else {
+                                    const dic = { "speices": data["speices"] + "_" + b }
+                                    firebase.database().ref(`users/${userid}`).update(dic);
+                                    M.toast({ html: `Succesfully Added!!`, classes: 'green rounded' });
+                                    var delayInMilliseconds = 1000; //1 second
+                                    setTimeout(function () {
+                                        window.location.href = 'dashboard';
+                                    }, delayInMilliseconds);
+                                }
+
+
+                            } else {
+                                console.log("No data available");
+                            }
+                        }).catch((error) => {
+                            console.error(error);
+                        });
+
+
+
+
+
+
+
+
+
+
+
+                    });
+
+
+                    jQuery_3_6_1('#close-first').click(function () {
+                        jQuery_3_6_1('#sec-form').toggleClass("show-modal");
+                    });
+
+
+
+                    jQuery_3_6_1('#close-first_1').click(function () {
+                        jQuery_3_6_1('#farm-form').toggleClass("show-modal");
+                    });
+
+
+                    jQuery_3_6_1('#genbutton').click(function (e) {
+
+                     M.toast({ html: `Succesfully Added!!`, classes: 'green rounded' });
+                     var delayInMilliseconds = 1000; //1 second
+                     setTimeout(function () {
+                                window.location.href = 'dashboard';
+                     }, delayInMilliseconds);
+
+                    });
+
+
+
+
+
+
+                });
+            </script>
+
+
+            <div id="cont" style="visibility: hidden;">
+
+
+
+                <h1 id="overiew" class="title">Overview of Mango-Chanusa</h1>
+                <div class="data">
+                    <div class="content-data">
+
+                        <div class="chart">
+                            <p>Chart According to Diseases</p>
+                            <div id="chart4"></div>
+                            <br><br><br><br>
+                            <button type="submit"
+                                style="justify-content: right; height: 50px !important;font-size: 14px;"
+                                class="btn-send">Get Details <i class='bx bxs-send'></i></button>
+
+                        </div>
+                    </div>
+                    <div class="content-data">
+                        <div class="chart">
+                            <p>Detail of Provided Images</p>
+
+                            <div id="chart2"></div>
+                            <button type="submit"
+                                style="justify-content: right; height: 50px !important;font-size: 14px;"
+                                class="btn-send">Get Details <i class='bx bxs-send'></i></button>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <br>
+                <!-- <h1 class="title">Overview of Mango-Sindhri</h1>
+                <div class="data">
+                    <div class="content-data">
+                        <div class="chart">
+                            <p>Detail of Provided Images</p>
+
+                            <div id="chart1"></div>
+                            <button type="submit"
+                                style="justify-content: right; height: 50px !important;font-size: 14px;"
+                                class="btn-send">Get Details <i class='bx bxs-send'></i></button>
+
+                        </div>
+                    </div>
+                    <div class="content-data">
+                        <div class="chart">
+                            <p>Chart According to Diseases</p>
+
+                            <div id="chart3"></div>
+                            <br><br><br><br>
+                            <button type="submit"
+                                style="justify-content: right; height: 50px !important;font-size: 14px;"
+                                class="btn-send">Get Details <i class='bx bxs-send'></i></button>
+
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+
+
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- NAVBAR -->
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/dropdown_.js') }}"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <script>
+        const dropdowns_ = document.querySelectorAll(".dropdown_");
+        con gen = document.getElementById('genbutton');
+<!--gen.addEventListener('click',()=> {-->
+<!--    alert('Succesfully Generated the Key!!');-->
+
+<!--});-->
+dropdowns_.forEach(dropdown=>{
+    const selct = dropdown.querySelector(".select_");
+    const caret = dropdown.querySelector(".caret_");
+    const menu = dropdown.querySelector(".menu_");
+    const options = dropdown.querySelectorAll(".menu_ li");
+    const selected = dropdown.querySelector(".selected_")
+
+
+selct.addEventListener("click",()=>{
+    selct.classList.toggle("select-clicked");
+    caret.classList.toggle("caret_rotate");
+    menu.classList.toggle("menu-open");
+});
+
+options.forEach(option=>{
+    option.addEventListener("click",()=>{
+        selected.innerText = option.innerText;
+        selected.classList.remove("select-clicked");
+        caret.classList.remove("caret_rotate");
+        menu.classList.remove("menu-open");
+        options.forEach(option=>{
+            option.classList.remove("active_");
+
+        });
+        option.classList.add("active_")
+    })
+})
+
+
+});
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mango Surveyor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main_page.css') }}" />
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo1.png') }}">
+
+
+</head>
+
+<body>
+
+
+<header class="hide">
+  <nav>
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Travelo" class="logo">
+    <ul>
+
+      <li>
+          <button style="background-color: #00fd15;border: 1px solid white ; padding: 5px 10px">
+              <a href="{{url_for('login')}}"> Get Started &nbsp;<i class="fa-solid fa-chevron-left" ></i></a>
+          </button>
+
+
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="vignette hide"></div>
+  <img src="{{ url_for('static', filename='img/background.png') }}" data-distance ="-200"  class="parallax bg-img">
+  <img src="{{ url_for('static', filename='img/mountain_10.png') }}" data-distance ="1000" class="parallax mountain-10">
+  <img src="{{ url_for('static', filename='img/mountain_9.png') }}" data-distance ="1400" class="parallax mountain-9">
+   <img src="{{ url_for('static', filename='img/mountain_8.png') }}" data-distance ="1700" class="parallax mountain-8">
+  <img src="{{ url_for('static', filename='img/mountain_7.png') }}" data-distance ="1900" class="parallax mountain-7">
+  <div class="text parallax">
+    <h2>Mango</h2>
+    <h1>Disease Detection</h1>
+    <p>One Stop Soluton for Mango Disease Detection and Prevention</p>
+  </div>
+   <img src="{{ url_for('static', filename='img/mountain_6.png') }}" data-distance ="2000" class="parallax mountain-6">
+  <img src="{{ url_for('static', filename='img/mountain_6.png') }}" data-distance ="2400" class="parallax mountain-5">
+
+</main>
+<script src="{{ url_for('static', filename='js/gsap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main_page.js') }}" defer></script>
+
+
+ <!-- <script src="./scripts/auth.js"></script> -->
+</body>
+
+</html>
