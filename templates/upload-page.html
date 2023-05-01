@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mango Surveyor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo1.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastet.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logout_modal.css') }}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload-image.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dropdown_.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
+
+    <script type="text/javascript">
+        var jQuery_3_6_1 = $.noConflict(true);
+    </script>
+    <style>
+        .menu_::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        /* Track */
+        .menu_::-webkit-scrollbar-track {
+            border-radius: 100vh;
+            background: #323741;
+        }
+
+        .menu_::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, rgba(255, 237, 89, 1) 20%, rgba(120, 236, 108, 1) 86%);
+            border-radius: 15px;
+            width: thin;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--Logout Modal-->
+
+
+    <div id="logou" class="popup">
+        <header>
+            <span>Ready to Leave?</span>
+            <div><i id="closing_logout" class="uil uil-times"></i>
+            </div>
+        </header>
+        <div class="content">
+
+            <p>Select "Logout" below if you are ready to end your current session.</p>
+
+            <br>
+            <div class="field">
+                <button id="cancel_logout">Cancel</button>
+                <button><a href="">Logout</a> </button>
+            </div>
+        </div>
+    </div>
+
+    <section id="sidebar" class="hide">
+        <a style="padding-top: 10px;" href="#" class="brand"><img
+                src="{{ url_for('static', filename='img/logo-black.png') }}" width="225px" height="55px" alt=""></a>
+        <ul class="side-menu">
+            <li><a href="{{ url_for('dashboard') }}"><i class='bx bxs-dashboard icon'></i> Dashboard</a></li>
+            <li class="divider" data-text="main">Main</li>
+            <!-- <li>
+                <a href="#"><i class='bx bxs-inbox icon'></i> Upload Images <i
+                        class='bx bx-chevron-right icon-right'></i></a>
+                <ul class="side-dropdown">
+                    <li><a href="#">Alert</a></li>
+                    <li><a href="#">Badges</a></li>
+                    <li><a href="#">Breadcrumbs</a></li>
+                    <li><a href="#">Button</a></li>
+                </ul>
+            </li> -->
+            <li><a class="active" href="{{ url_for('upload') }}"><i class='bx  bxs-notepad icon'></i> Make
+                    Predictions</a></li>
+            <li><a href=""><i class='bx bx-history icon'></i> History</a></li>
+            <li class="divider" data-text="Information">Information</li>
+            <li><a href="{{ url_for('information') }}"><i class='bx bxs-notepad icon'></i> About Disease
+                </a></li>
+            <li id="hide_from_user"><a href="{{url_for('user_manager')}}"><i class='bx bxs-notepad icon'></i> Farm-User Management </a></li>
+            {{hide_from_user | safe}}
+
+        </ul>
+        <div class="ads">
+            <div class="wrapper">
+                <!-- <a href="#" class="btn-upgrade">Upgrade</a> -->
+                <p>A Product of <span>Mango Surveyor</span>. <span>All Rights Reserved</span></p>
+            </div>
+        </div>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- NAVBAR -->
+
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu toggle-sidebar'></i>
+            <form action="#">
+                <!-- <div class="form-group">
+					<input type="text" placeholder="Search...">
+					<i class='bx bx-search icon' ></i>
+				</div>-->
+            </form>
+            <!-- <a href="#" class="nav-link">
+				<i class='bx bxs-bell icon' ></i>
+				<span class="badge">5</span>
+			</a> -->
+            <!-- <a href="#" class="nav-link">
+				<i class='bx bxs-message-square-dots icon' ></i>
+				<span class="badge">8</span>
+			</a> -->
+            <h4 id="usename" style="font-size: 15px; font-weight: 600;">
+            </h4>
+                <span class="divider"></span>
+                <div class="profile">
+
+                    <img src="{{ url_for('static', filename='img/user.png') }}" alt="">
+                    <ul class="profile-link">
+                        <li><a href="#"><i class='bx bxs-user-circle icon'></i> Profile</a></li>
+                        <li id="logout_"><a href="#"><i class='bx bxs-log-out-circle'></i> Logout</a></li>
+                    </ul>
+                </div>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main id="main">
+            <h1 class="title">Make Prediction</h1>
+            <ul class="breadcrumbs">
+                <li><a href="#">Home</a></li>
+                <li class="divider">/</li>
+                <li><a href="#" class="active">Prediction</a></li>
+            </ul>
+            <button id="pdf" class="btn-send"  style="width: 180px;height: 55px;visibility: hidden;margin-right: 10px;margin-top: 10px;" onclick="createPDF( )">Generate PDF</button>
+                <button id="csv" class="btn-send" style="width: 180px;height: 55px;visibility: hidden;margin-top: 10px;" onclick="htmlToCSV()">Create CSV</button>
+            <center id="cen">
+                <br>
+                <span style="display: inline-block ">
+                    <div class="dropdown_" style="margin-bottom: 10px;">
+                        <div class="select_" style="width:400px;">
+                            <span id="titling" class="selected_">--Select Specie--</span>
+                            <div class="caret_"></div>
+                        </div>
+                        <ul id="spe" class="menu_" style="left: 33%; width: 400px;height:200px;overflow-y: scroll;transform: none; scrollbar-color:  rgba(255,237,89,1)  #f1f0f6;
+                        scrollbar-width: thin;  text-align: left;">
+                            <!-- style="width:330px;" -->
+                        </ul>
+                    </div>
+                </span>
+                <div class="card" style="justify-content: center;  align-items: center;  width: 400px;   height: auto; padding: 15px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+                border-radius: 5px;
+                overflow: hidden;
+                background: #fafbff;">
+                    <div class="top">
+                        <p>Upload Images of Mango Leaves</p>
+                        <button id="upload_file" type="submit">Upload</button>
+                    </div>
+                    <div class="drag-area">
+                        <span class="visible">
+                            Drag & Drop Image here or
+                            <span class="select" role="button">Browse</span>
+                        </span>
+                        <span class="on-drop">Drop images here</span>
+                        <input id="filee" name="files[]" type="file" class="file" multiple />
+
+                    </div>
+
+                    <!-- IMAGE PREVIEW CONTAINER  -->
+                    <div class="container"></div>
+
+                </div>
+            </center>
+            <br><br>
+            <div id="table-main" class="container-fluid" style="visibility: hidden;">
+
+
+                <div class="row">
+                    <!-- Your Profile Views Chart -->
+                    <div class="col-lg-12 m-b30">
+                        <div class="widget-box">
+
+
+
+
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr class="text-center">
+                                                    <th style="color: black;">No.</th>
+                                                    <th style="color: black;">Image Name</th>
+                                                    <th style="color: black;">Disease Found</th>
+                                                    <th style="color: black;">Predicted Disease</th>
+                                                    <th style="color: black;">Predicted Percentage</th>
+                                                    <th style="color: black;">Cure</th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody id="tabledata">
+
+
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Your Profile Views Chart END-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <!-- <input id="filee" type="file" name="files[]" multiple="multiple">
+        <input id="upload_file" type="submit" value="upload_image"> -->
+    <!-- </form> -->
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/upload-image.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        // alert(localStorage.getItem("total_speices"));
+        listof = localStorage.getItem("total_speices").split("_")
+        for (i = 0; i < listof.length; i++) {
+
+            jQuery_3_6_1("#spe").append(`<li id=${listof[i]}>${listof[i]}</li>`);
+            jQuery_3_6_1(`#${listof[i]}`).click(function (event) {
+                var ttt = jQuery_3_6_1(event.target).text()
+                document.getElementById("titling").innerText = ttt;
+                document.getElementById("spe").classList.remove("menu-open");
+                document.getElementById("overiew").innerText = `Overview of Mango-${ttt}`;
+                document.getElementById("cont").style.visibility = "initial";
+
+            });
+        }
+        //  localStorage.setItem("token", "teenday");
+        jQuery_3_6_1('#logout_').click(function (e) {
+            e.preventDefault();
+            jQuery_3_6_1('#logou').toggleClass("show");
+        });
+        jQuery_3_6_1('#closing_logout').click(function (e) {
+            e.preventDefault();
+            jQuery_3_6_1('#logou').toggleClass("show");
+        });
+        jQuery_3_6_1('#cancel_logout').click(function (e) {
+            e.preventDefault();
+            jQuery_3_6_1('#logou').toggleClass("show");
+        });
+        function htmlToCSV(html, filename) {
+            M.Toast.dismissAll();
+            M.toast({ html: `Please Wait!!`, classes: 'green rounded' });
+            var data = [];
+            var get_rows = document.querySelectorAll("table tr");
+
+            for (var i = 0; i < get_rows.length; i++) {
+                var rows = [];
+                var cols = get_rows[i].querySelectorAll("td, th");
+
+                for (var j = 0; j < cols.length; j++) {
+                    rows.push(cols[j].innerText);
+                }
+
+                data.push(rows.join(","));
+            }
+
+            downloadCSVFile(data.join("\n"), filename);
+        }
+        function downloadCSVFile(csv, filename) {
+            var csv_file, download_link;
+
+            csv_file = new Blob([csv], { type: "text/csv" });
+
+            download_link = document.createElement("a");
+
+            download_link.download =jQuery_3_6_1("#reports_name").text()+ " CSV Report" ;
+
+            download_link.href = window.URL.createObjectURL(csv_file);
+
+            download_link.style.display = "none";
+
+            document.body.appendChild(download_link);
+
+            download_link.click();
+        }
+        function createPDF(name) {
+            M.Toast.dismissAll();
+            M.toast({ html: `Please Wait!!`, classes: 'green rounded' });
+            var doc = new jsPDF('p', 'pt', 'letter');
+            var htmlstring = '';
+            var tempVarToCheckPageHeight = 0;
+            var pageHeight = 0;
+            pageHeight = doc.internal.pageSize.height;
+            specialElementHandlers = {
+                // element with id of "bypass" - jQuery style selector
+                '#bypassme': function (element, renderer) {
+                    // true = "handled elsewhere, bypass text extraction"
+                    return true
+                }
+            };
+            margins = {
+                top: 150,
+                bottom: 60,
+                left: 40,
+                right: 40,
+                width: 50
+            };
+            var y = 20;
+            doc.setLineWidth(2);
+            doc.text(200, y = y + 70, "List of All Students");
+            doc.autoTable({
+                html: '#dataTable',
+                startY: 70,
+                theme: 'grid',
+                columnStyles: {
+                    //0: {
+                    //    cellWidth: 45,
+                    //},
+                    //1: {
+                    //    cellWidth: 45,
+                    //},
+                    //2: {
+                    //    cellWidth: 45,
+                    //},
+                    //3: {
+                    //    cellWidth: 45,
+                    ////}
+                },
+                styles: {
+                    minCellHeight: 40
+                }
+            })
+            doc.save( " PDF Report");
+        }
+        document.getElementById("usename").innerHTML = localStorage.getItem("username")
+    </script>
+    <script src="{{ url_for('static', filename='js/dropdown_.js') }}"></script>
+</body>
+
+
+</html>
