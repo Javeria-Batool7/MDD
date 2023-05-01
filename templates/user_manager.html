@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mango Surveyor</title>
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo1.png') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal-style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logout_modal.css') }}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
+    <script type="text/javascript">
+        var jQuery_3_6_1 = $.noConflict(true);
+    </script>
+</head>
+
+<body>
+    <!--Logout Modal-->
+
+
+    <div id="logou" class="popup">
+        <header>
+            <span>Ready to Leave?</span>
+            <div><i id="closing_logout" class="uil uil-times"></i>
+            </div>
+        </header>
+        <div class="content">
+
+            <p>Select "Logout" below if you are ready to end your current session.</p>
+
+            <br>
+            <div class="field">
+                <button id="cancel_logout">Cancel</button>
+                <button><a href="">Logout</a> </button>
+            </div>
+        </div>
+    </div>
+
+    <section id="sidebar" class="hide">
+        <a style="padding-top: 10px;" href="#" class="brand"><img
+                src="{{ url_for('static', filename='img/logo-black.png') }}" width="225px" height="55px" alt=""></a>
+        <ul class="side-menu">
+            <li><a href="{{ url_for('dashboard') }}"><i class='bx bxs-dashboard icon'></i> Dashboard</a></li>
+            <li class="divider" data-text="main">Main</li>
+            <!-- <li>
+                <a href="#"><i class='bx bxs-inbox icon'></i> Upload Images <i
+                        class='bx bx-chevron-right icon-right'></i></a>
+                <ul class="side-dropdown">
+                    <li><a href="#">Alert</a></li>
+                    <li><a href="#">Badges</a></li>
+                    <li><a href="#">Breadcrumbs</a></li>
+                    <li><a href="#">Button</a></li>
+                </ul>
+            </li> -->
+            <li><a href=""><i class='bx  bxs-notepad icon'></i> Make Predictions</a></li>
+            <li><a href=""><i class='bx bx-history icon'></i> History</a></li>
+            <li class="divider" data-text="Information">Information</li>
+            <li><a class="active" href="{{ url_for('information') }}"><i class='bx bxs-notepad icon'></i> About Disease
+                </a></li>
+            <li id="hide_from_user"><a href="{{url_for('user_manager')}}"><i class='bx bxs-notepad icon'></i> Farm-User Management </a></li>
+            {{hide_from_user | safe}}
+
+        </ul>
+        <div class="ads">
+            <div class="wrapper">
+                <!-- <a href="#" class="btn-upgrade">Upgrade</a> -->
+                <p>A Product of <span>Mango Surveyor</span>. <span>All Rights Reserved</span></p>
+            </div>
+        </div>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- NAVBAR -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu toggle-sidebar'></i>
+            <form action="#">
+                <!-- <div class="form-group">
+					<input type="text" placeholder="Search...">
+					<i class='bx bx-search icon' ></i>
+				</div>-->
+            </form>
+            <!-- <a href="#" class="nav-link">
+				<i class='bx bxs-bell icon' ></i>
+				<span class="badge">5</span>
+			</a> -->
+            <!-- <a href="#" class="nav-link">
+				<i class='bx bxs-message-square-dots icon' ></i>
+				<span class="badge">8</span>
+			</a> -->
+            <h4 id="usename" style="font-size: 15px; font-weight: 600;">
+            </h4>
+            <span class="divider"></span>
+            <div class="profile">
+
+                <img src="{{ url_for('static', filename='img/user.png') }}" alt="">
+                <ul class="profile-link">
+                    <li><a href="#"><i class='bx bxs-user-circle icon'></i> Profile</a></li>
+                    <li id="logout_"><a href="#"><i class='bx bxs-log-out-circle'></i> Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+
+      <style>
+      table, th, td {
+      border:1px solid black;
+      }
+    </style>
+      <table style="width:50%" align="center">
+        <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for key, value in farm_key %}
+        <tr>
+          <td>{{ key }}</td>
+          <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <br>
+      <br>
+      <table style="width:50%" align="center">
+        <thead>
+        <tr>
+          <th>User Id</th>
+          <th>Key</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for key, value in user_data %}
+        <tr>
+          <td>{{ key }}</td>
+          <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </section>
+</body>
+</html>
